@@ -1,0 +1,1 @@
+puts Faker::Lorem.word
