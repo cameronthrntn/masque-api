@@ -6,6 +6,10 @@ class TopicsController < ApplicationController
     json_response(@topics)
   end
 
+  def show
+    json_response(set_topic)
+  end
+
   def create
     @topic = Topic.create!(topic_params)
     json_response(@topic, :created)
