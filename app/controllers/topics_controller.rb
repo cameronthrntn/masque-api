@@ -1,5 +1,5 @@
 class TopicsController < ApplicationController
-  before_action :set_topic, only: [:show, :deestroy]
+  before_action :set_topic, only: [:show, :destroy]
 
   def index
     @topics = Topic.all
@@ -27,6 +27,6 @@ class TopicsController < ApplicationController
   end
 
   def set_topic
-    @topic = Topic.find(params[:id])
+    @topic = Topic.select('Topics.id, Topics.title, Topics.content, Topics.created_at, Masks.design, Masks.colour').joins("LEFT JOIN masks ON topics.id = masks.topic_id AND topics.user_id = masks.user_id").where(masks: {topic_id: params[:id]}).first
   end
 end
