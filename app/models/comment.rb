@@ -1,6 +1,5 @@
 class Comment < ApplicationRecord
-  belongs_to :topic
-  belongs_to :user
+  belongs_to :mask
 
   validates_presence_of :content
 end

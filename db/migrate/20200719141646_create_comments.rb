@@ -2,8 +2,7 @@ class CreateComments < ActiveRecord::Migration[6.0]
   def change
     create_table :comments do |t|
       t.text :content
-      t.references :topic, null: false, foreign_key: true
-      t.references :user, null: false, foreign_key: true
+      t.integer :reply_id, :limit => 5
 
       t.timestamps
     end

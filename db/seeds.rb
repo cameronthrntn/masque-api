@@ -3,79 +3,199 @@ require 'yaml'
 masks = YAML.load(File.read("config/masks.yml"))
 colours = YAML.load(File.read("config/colours.yml"))
 
-usersNum = 5
-topicsNum = 7
-masksNum = 25
+usersArr = Array.new(8)
+topicsArr = Array.new(6)
+masksArr =  [
+  # Thread masks
+  {
+    user_id: 1,
+    topic_id: 1,
+    design: 'thief',
+    colour: 'red'
+  },
+  {
+    user_id: 1,
+    topic_id: 2,
+    design: 'hannya',
+    colour: 'black'
+  },{
+    user_id: 2,
+    topic_id: 3,
+    design: 'kitsune',
+    colour: 'green'
+  },{
+    user_id: 3,
+    topic_id: 4,
+    design: 'hyottoko',
+    colour: 'navy'
+  },{
+    user_id: 4,
+    topic_id: 5,
+    design: 'opera',
+    colour: 'yellow'
+  },{
+    user_id: 5,
+    topic_id: 6,
+    design: 'carnivale',
+    colour: 'white'
+  },
 
-def makeTopics(num, usersNum)
-  topicsArr = []
-  num.times do |topic, index| 
+  # Comment masks
+  {
+    user_id: 1,
+    topic_id: 3,
+    design: 'festima',
+    colour: 'purple'
+  },{
+    user_id: 6,
+    topic_id: 1,
+    design: 'huichol',
+    colour: 'pink'
+  },{
+    user_id: 6,
+    topic_id: 2,
+    design: 'calacas',
+    colour: 'orange'
+  },{
+    user_id: 7,
+    topic_id: 1,
+    design: 'melpomene',
+    colour: 'red'
+  },{
+    user_id: 8,
+    topic_id: 1,
+    design: 'thief',
+    colour: 'cyan'
+  },{
+    user_id: 4,
+    topic_id: 1,
+    design: 'melpomene',
+    colour: 'red'
+  },{
+    user_id: 2,
+    topic_id: 2,
+    design: 'hyottoko',
+    colour: 'pink'
+  }
+]
+commentsArr = Array.new(20)
+
+def makeTopics(topicsArr, usersArr)
+  topicsArr[0] = {
+    title: (Faker::JapaneseMedia::OnePiece.quote).slice(0,128),
+    content: Faker::JapaneseMedia::OnePiece.quote,
+    user_id: 1,
+  }
+  num = topicsArr.length - 1
+  num.times do |idx|
     topic = {
-      title: (Faker::JapaneseMedia::OnePiece.quote).slice(0,255),
+      title: (Faker::JapaneseMedia::OnePiece.quote).slice(0,128),
       content: Faker::JapaneseMedia::OnePiece.quote,
-      user_id: rand(usersNum) + 1,
+      user_id: idx + 1,
     }
     puts "added #{topic[:title]} to topics."
-    topicsArr.push(topic)
+    topicsArr[idx + 1] = topic
   end
   puts "#{topicsArr.length} Topics added"
   return topicsArr
 end
 
-def makeUsers(num)
-  usersArr = []
-  num.times do
+def makeUsers(arr)
+  arr.each_with_index do |val, idx|
     user = {
-      access: "#{Faker::JapaneseMedia::OnePiece.character}1234123456789"
+      access: "#{Faker::JapaneseMedia::OnePiece.character.gsub(/\s+/, "")}1234123456789"
     }
     puts "added #{user[:access].reverse.slice(13...).reverse} to users."
-    usersArr.push(user)
+    arr[idx] = (user)
   end
-  puts "#{usersArr.length} Users added"
-  return usersArr
+  puts "#{arr.length} Users added"
+  return arr
 end
 
 
-def makeMasks(masks, colours, masksNum, usersNum, topicsNum)
-  masksArr = []
-  userTopicArr = []
-  maskColourArr = []
-  masksNum.times do |mask, index|
-
-    user_id = rand(usersNum) + 1
-    topic_id = rand(topicsNum) + 1
-    userTopic = "#{user_id}#{topic_id}"
-    mask = masks.sample
-    colour = colours.sample
-    maskColour = "#{mask}#{colour}#{topic_id}"
-
-    while(userTopicArr.include?(userTopic) || maskColourArr.include?(maskColour))
-      user_id = rand(usersNum) + 1
-      topic_id = rand(topicsNum) + 1
-      mask = masks.sample
-      colour = colours.sample
-      userTopic = "#{user_id}#{topic_id}"
-      maskColour = "#{mask}#{colour}#{topic_id}"
-    end
-
-    userTopicArr.push(userTopic)
-    maskColourArr.push(maskColour)
-
-    mask = {
-      user_id: user_id,
-      topic_id: topic_id,
-      mask: mask,
-      colour: colour
-    }
-
-    masksArr.push(mask)
-    puts "User #{mask[:user_id]} has donned a #{mask[:colour]} #{mask[:mask]} mask in topic #{mask[:topic_id]}."
-  end
-
-  puts "#{masksArr.length} masks added"
+def makeMasks(masksArr)
+  # I had some fancy automation here but the randomness was too much of a hassle to work with so I got lazy and now you get the stupidest function in all of existence.
+  puts '13 masks added.'
   return masksArr
 end
 
-User.create(makeUsers(usersNum))
-Topic.create(makeTopics(topicsNum, usersNum))
-Mask.create(makeMasks(masks, colours, masksNum, usersNum, topicsNum))
+def makeComments(commentsArr, masksArr)
+  # The commented code here made impossible replies, would be nice to fix but I've spent too long on this seed file...
+  puts '13 comments added'
+  return [
+    {
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 4
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 1
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 8
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 3,
+      mask_id: 1
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 4,
+      mask_id: 8
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 5,
+      mask_id: 1
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 10
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 7,
+      mask_id: 11
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 12
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 13
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 10,
+      mask_id: 2
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 11,
+      mask_id: 9
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 9
+    },
+  ]
+  # commentsArr.each.with_index do |comment, idx|
+  #   chance = rand(4)
+  #   reply_id = 0
+  #   if chance == 2 && idx > 2
+  #     reply_id = rand(idx)
+  #   end
+
+  #   commentsArr[idx] = {
+  #     content: Faker::JapaneseMedia::OnePiece.quote,
+  #     reply_id: reply_id,
+  #     mask_id: rand(masksArr.length) + 1
+  #   }
+
+  # end
+  # puts commentsArr
+  return commentsArr
+end
+
+User.create(makeUsers(usersArr))
+Topic.create(makeTopics(topicsArr, usersArr))
+Mask.create(makeMasks(masksArr))
+Comment.create(makeComments(commentsArr, masksArr))

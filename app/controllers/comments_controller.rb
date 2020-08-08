@@ -1,13 +1,9 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :destroy]
+  before_action :set_comment, only: [:destroy]
 
-  def index
-    unless params['thread_id']
-      json_response({ message: 'A thread is required' }, :not_found)
-    else
-      @comments = Mask.where(thread_id: params['thread_id'])
-      json_response(@comments)
-    end
+  def show
+    @comments = Comment.select('Comments.*, Masks.topic_id, Masks.design, Masks.colour').joins("LEFT JOIN masks ON comments.mask_id = masks.id").where(masks: { topic_id: params[:id] })
+    json_response(@comments)
   end
 
   def create
@@ -18,10 +14,10 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.permit(:user_id, :thread_id, :content)
+    params.permit(:user_id, :thread_id, :content, :reply_id)
   end
 
-  def set_mask
-    @mask = Mask.find(params[:mask_id])
+  def set_comment
+    @comment = Comment.find(params[:comment_id])
   end
 end

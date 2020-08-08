@@ -18,7 +18,7 @@ class MasksController < ApplicationController
   private
 
   def mask_params
-    params.permit(:user_id, :thread_id, :mask, :colour)
+    params.permit(:user_id, :thread_id, :design, :colour)
   end
 
   def set_mask
