@@ -17,7 +17,7 @@ masksArr =  [
     user_id: 1,
     topic_id: 2,
     design: 'hannya',
-    colour: 'black'
+    colour: 'cyan'
   },{
     user_id: 2,
     topic_id: 3,
@@ -37,7 +37,7 @@ masksArr =  [
     user_id: 5,
     topic_id: 6,
     design: 'carnivale',
-    colour: 'white'
+    colour: 'yellow'
   },
 
   # Comment masks
