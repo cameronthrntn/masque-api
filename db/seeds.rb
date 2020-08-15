@@ -59,7 +59,7 @@ masksArr =  [
   },{
     user_id: 7,
     topic_id: 1,
-    design: 'melpomene',
+    design: 'tragedy',
     colour: 'red'
   },{
     user_id: 8,
@@ -69,7 +69,7 @@ masksArr =  [
   },{
     user_id: 4,
     topic_id: 1,
-    design: 'melpomene',
+    design: 'comedy',
     colour: 'red'
   },{
     user_id: 2,
@@ -121,7 +121,7 @@ end
 
 def makeComments(commentsArr, masksArr)
   # The commented code here made impossible replies, would be nice to fix but I've spent too long on this seed file...
-  puts '13 comments added'
+  puts '14 comments added'
   return [
     {
       content: Faker::JapaneseMedia::OnePiece.quote,
@@ -175,7 +175,11 @@ def makeComments(commentsArr, masksArr)
       content: Faker::JapaneseMedia::OnePiece.quote,
       reply_id: 0,
       mask_id: 9
-    },
+    },{
+      content: Faker::JapaneseMedia::OnePiece.quote,
+      reply_id: 0,
+      mask_id: 7
+    }
   ]
   # commentsArr.each.with_index do |comment, idx|
   #   chance = rand(4)
