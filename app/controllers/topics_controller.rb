@@ -2,7 +2,16 @@ class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :destroy]
 
   def index
-    @topics = Topic.all
+    distance = params[:distance]
+    latitude = params[:latitude].to_i
+    longitude = params[:longitude].to_i
+    if distance === 'closest'
+      @topics = Topic.where('topics.longitude >= ?', longitude.to_i - 1).where('topics.longitude <= ?', longitude + 1).where('topics.latitude >= ?', latitude - 1).where('topics.latitude <= ?', latitude + 1)
+    elsif distance === 'midrange'
+      @topics = Topic.where('topics.longitude >= ?', longitude.to_i - 2).where('topics.longitude <= ?', longitude + 2).where('topics.latitude >= ?', latitude - 2).where('topics.latitude <= ?', latitude + 2)
+    else
+      @topics = Topic.all
+    end
     json_response(@topics)
   end
 
