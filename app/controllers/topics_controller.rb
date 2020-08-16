@@ -23,10 +23,11 @@ class TopicsController < ApplicationController
   private
 
   def topic_params
-    params.permit(:title, :content, :user_id)
+    params.permit(:title, :content, :user_id, :latitude, :longitude)
   end
 
   def set_topic
+    puts params[:id]
     @topic = Topic.select('Topics.id, Topics.title, Topics.content, Topics.created_at, Masks.design, Masks.colour').joins("LEFT JOIN masks ON topics.id = masks.topic_id AND topics.user_id = masks.user_id").where(masks: {topic_id: params[:id]}).first
   end
 end

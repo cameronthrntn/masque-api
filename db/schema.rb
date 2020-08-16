@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 2020_08_02_133454) do
   create_table "topics", force: :cascade do |t|
     t.string "title"
     t.text "content"
+    t.float "latitude"
+    t.float "longitude"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

@@ -3,6 +3,8 @@ class CreateTopics < ActiveRecord::Migration[6.0]
     create_table :topics do |t|
       t.string :title
       t.text :content
+      t.float :latitude
+      t.float :longitude
       t.references :user, null: false, foreign_key: true
 
       t.timestamps
