@@ -5,12 +5,26 @@ class TopicsController < ApplicationController
     distance = params[:distance]
     latitude = params[:latitude].to_i
     longitude = params[:longitude].to_i
+    amount = params[:amount].to_i
+    page = params[:page].to_i - 1
     if distance === 'closest'
-      @topics = Topic.where('topics.longitude >= ?', longitude.to_i - 1).where('topics.longitude <= ?', longitude + 1).where('topics.latitude >= ?', latitude - 1).where('topics.latitude <= ?', latitude + 1)
+      @topics = Topic
+        .where('topics.longitude >= ?', longitude.to_i - 1)
+        .where('topics.longitude <= ?', longitude + 1)
+        .where('topics.latitude >= ?', latitude - 1)
+        .where('topics.latitude <= ?', latitude + 1)
+        .limit(amount)
+        .offset((amount * page) + 1)
     elsif distance === 'midrange'
-      @topics = Topic.where('topics.longitude >= ?', longitude.to_i - 2).where('topics.longitude <= ?', longitude + 2).where('topics.latitude >= ?', latitude - 2).where('topics.latitude <= ?', latitude + 2)
+      @topics = Topic
+        .where('topics.longitude >= ?', longitude.to_i - 2)
+        .where('topics.longitude <= ?', longitude + 2)
+        .where('topics.latitude >= ?', latitude - 2)
+        .where('topics.latitude <= ?', latitude + 2)
+        .limit(amount)
+        .offset((amount * page) + 1)
     else
-      @topics = Topic.all
+      @topics = Topic.all.limit(amount).offset((amount * page) + 1)
     end
     json_response(@topics)
   end
@@ -32,7 +46,7 @@ class TopicsController < ApplicationController
   private
 
   def topic_params
-    params.permit(:title, :content, :user_id, :latitude, :longitude)
+    params.permit(:title, :content, :user_id, :latitude, :longitude, :distance, :amount, :page)
   end
 
   def set_topic
