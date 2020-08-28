@@ -1,5 +1,8 @@
+require 'yaml'
+
 class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :destroy]
+  wrap_parameters false
 
   def index
     distance = params[:distance]
@@ -14,7 +17,7 @@ class TopicsController < ApplicationController
         .where('topics.latitude >= ?', latitude - 1)
         .where('topics.latitude <= ?', latitude + 1)
         .limit(amount)
-        .offset((amount * page) + 1)
+        .offset(amount * page)
     elsif distance === 'midrange'
       @topics = Topic
         .where('topics.longitude >= ?', longitude.to_i - 2)
@@ -22,7 +25,7 @@ class TopicsController < ApplicationController
         .where('topics.latitude >= ?', latitude - 2)
         .where('topics.latitude <= ?', latitude + 2)
         .limit(amount)
-        .offset((amount * page) + 1)
+        .offset(amount * page)
     else
       @topics = Topic.all.limit(amount).offset((amount * page) + 1)
     end
@@ -35,6 +38,9 @@ class TopicsController < ApplicationController
 
   def create
     @topic = Topic.create!(topic_params)
+    masks = YAML.load(File.read("config/masks.yml"))
+    colours = YAML.load(File.read("config/colours.yml"))
+    Mask.create!({user_id: params[:user_id], topic_id: @topic[:id], design: masks.sample, colour: colours.sample})
     json_response(@topic, :created)
   end
 
@@ -46,11 +52,11 @@ class TopicsController < ApplicationController
   private
 
   def topic_params
+    puts params
     params.permit(:title, :content, :user_id, :latitude, :longitude, :distance, :amount, :page)
   end
 
   def set_topic
-    puts params[:id]
     @topic = Topic.select('Topics.id, Topics.title, Topics.content, Topics.created_at, Masks.design, Masks.colour').joins("LEFT JOIN masks ON topics.id = masks.topic_id AND topics.user_id = masks.user_id").where(masks: {topic_id: params[:id]}).first
   end
 end
