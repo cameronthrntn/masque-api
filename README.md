@@ -21,6 +21,7 @@ The Masque platform uses an API built in [**Ruby on Rails**][r], for mobile devi
 [ax]: https://github.com/axios/axios
 [r]: https://github.com/rails/rails
 [rn]: https://github.com/facebook/react-native
+[rs]: https://github.com/rspec/rspec
 [rna]: https://github.com/react-navigation/react-navigation
 [rjs]: https://github.com/facebook/react
 [e]: https://github.com/expo/expo
@@ -35,13 +36,18 @@ The Masque platform uses an API built in [**Ruby on Rails**][r], for mobile devi
 
   Once this repository is cloned, dependencies must be met through:
 
-  ```bash
+  ```
     bundle
+  ```
+  Prior to running the local server, databases will need to be setup and seeded:
+
+  ```
+    rake db:create db:setup db:migrate
   ```
 
   To run the API locally simply run:
 
-  ```bash
+  ```
     rails s
   ```
 
@@ -49,6 +55,8 @@ The Masque platform uses an API built in [**Ruby on Rails**][r], for mobile devi
 
 - ## 📖 Documentation
 
+  - ### ✔️ Testing
+    [**rspec**][rs] is used for testing the API. These tests can be ran with `rails spec`. At a later date these will be factored into a CI system.
   - ### 🚧 Structure
     This project follows the basic MVC setup following your standard rails project setup. 
   - ### 🚗 Routing
