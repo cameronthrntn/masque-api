@@ -9,7 +9,9 @@ class TopicsController < ApplicationController
     latitude = params[:latitude].to_i
     longitude = params[:longitude].to_i
     amount = params[:amount].to_i
+    amount = 5 unless params[:amount]
     page = params[:page].to_i - 1
+    page = 0 unless params[:page]
     if distance === 'closest'
       @topics = Topic
         .where('topics.longitude >= ?', longitude.to_i - 1)
@@ -27,7 +29,7 @@ class TopicsController < ApplicationController
         .limit(amount)
         .offset(amount * page)
     else
-      @topics = Topic.all.limit(amount).offset((amount * page) + 1)
+      @topics = Topic.all.limit(amount).offset(amount * page)
     end
     json_response(@topics)
   end
