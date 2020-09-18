@@ -2,7 +2,10 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:destroy]
 
   def show
-    @comments = Comment.select('Comments.*, Masks.topic_id, Masks.design, Masks.colour').joins("LEFT JOIN masks ON comments.mask_id = masks.id").where(masks: { topic_id: params[:id] })
+    @comments = Comment
+      .select('Comments.*, Masks.topic_id, Masks.design, Masks.colour')
+      .joins("LEFT JOIN masks ON comments.mask_id = masks.id")
+      .where(masks: { topic_id: params[:id] })
     json_response(@comments)
   end
 
