@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   resources :users
   resources :topics
   get '/topics/:id/comments', to: 'comments#show'
+  post '/topics/:id/comments', to: 'comments#create'
   get '/api', to: 'api#index'
 end
