@@ -22,7 +22,7 @@ class ApiController < ApplicationController
             "null": "Gets topics regardless of distance"
           },
           latitude: {
-            format: "float"
+            format: "float",
             function: "The latitude of the user"
           },
           longitude: { 
@@ -44,7 +44,8 @@ class ApiController < ApplicationController
           GET: "Returns a topic by a given id",
           DELETE: "Deletes a topic by a given id",
           "/comments": {
-            GET: "Returns the comments for a given topic"
+            GET: "Returns the comments for a given topic",
+            POST: "Post a new comment to a topic"
           }
         }
       }})
